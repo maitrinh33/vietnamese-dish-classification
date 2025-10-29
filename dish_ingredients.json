@@ -1,0 +1,17 @@
+{
+  "banh_mi": ["baguette", "pate", "pork", "pickled carrot", "daikon", "cucumber", "cilantro", "chili"],
+  "banh_pia": ["durian", "mung bean", "flour", "egg yolk", "sugar"],
+  "banh_tai_heo": ["flour", "egg", "sugar", "oil"],
+  "banh_tieu": ["flour", "yeast", "sesame", "sugar", "oil"],
+  "banh_trang_nuong": ["rice paper", "egg", "pork floss", "scallion", "mayonnaise", "chili sauce"],
+  "banh_troi_nuoc": ["glutinous rice flour", "jaggery", "ginger syrup", "sesame"],
+  "banh_trung_thu": ["flour", "lotus paste", "mung bean", "salted egg yolk"],
+  "banh_u": ["glutinous rice", "mung bean", "pork", "banana leaf"],
+  "banh_xeo": ["rice flour", "turmeric", "pork", "shrimp", "bean sprouts", "lettuce", "fish sauce"],
+  "bo_kho": ["beef", "carrot", "star anise", "cinnamon", "bread", "herbs"],
+  "bo_ne": ["beef", "egg", "pate", "onion", "bread", "butter"],
+  "bo_nuong_la_lot": ["beef", "betel leaves", "lemongrass", "garlic", "peanuts", "vermicelli"],
+  "bun_bo_hue": ["beef", "lemongrass", "shrimp paste", "rice noodles", "scallion", "chili oil"],
+  "bun_cha": ["grilled pork", "vermicelli", "fish sauce", "herbs", "pickles"],
+  "bun_cha_ca": ["fish cake", "vermicelli", "dill", "pineapple broth", "herbs"]
+}
