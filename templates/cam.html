@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Camera - Vietnamese Food Classifier</title>
+    <style>
+      body { margin: 0; font-family: Arial, sans-serif; background: #0f172a; color: #e2e8f0; display:flex; align-items:center; justify-content:center; min-height:100vh; }
+      .card { background:#111827; border:1px solid #1f2937; border-radius:14px; padding:16px; width:min(92vw, 900px); box-shadow:0 20px 60px rgba(2,8,23,.45); }
+      h1 { margin:0 0 12px 0; font-size:22px; }
+      .row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+      a { color:#93c5fd; text-decoration:none; }
+      .video { width:100%; border-radius:12px; overflow:hidden; background:#000; max-height: 400px; }
+      img { width:100%; display:block; max-height: 400px; object-fit: contain; }
+      .actions { display:flex; gap:10px; margin:10px 0; }
+      .btn { background:#2563eb; color:#fff; padding:8px 12px; border-radius:999px; text-decoration:none; cursor:pointer; border:none; }
+      .panel { margin-top:12px; background:#0b1220; border:1px solid #1f2937; border-radius:12px; padding:12px; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="row">
+        <h1>Camera - Vietnamese Food Classifier</h1>
+        <a href="/">← Back</a>
+      </div>
+      <div class="video">
+        <img id="stream" src="/video_feed" alt="Video stream" />
+      </div>
+      <div class="actions">
+        <button id="captureBtn" class="btn">Capture</button>
+      </div>
+      <div id="resultPanel" class="panel" style="display:none"></div>
+      <p>Overlay text shows the predicted dish and confidence; below are a few suggested ingredients.</p>
+    </div>
+    <canvas id="canvas" style="display:none"></canvas>
+    <script>
+      const stream = document.getElementById('stream');
+      const canvas = document.getElementById('canvas');
+      const captureBtn = document.getElementById('captureBtn');
+      const resultPanel = document.getElementById('resultPanel');
+
+      captureBtn.addEventListener('click', async () => {
+        const w = stream.naturalWidth || stream.width;
+        const h = stream.naturalHeight || stream.height;
+        if (!w || !h) return;
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(stream, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+        const res = await fetch('/predict_frame', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: dataUrl })
+        }).then(r => r.json()).catch(() => null);
+        if (!res || res.error) return;
+
+        resultPanel.style.display = 'block';
+        resultPanel.innerHTML = `
+          <h3 style="margin:0 0 8px 0">${res.dish}</h3>
+          <p style="margin:0 0 10px 0; opacity:.8">Confidence: ${(res.confidence*100).toFixed(1)}%</p>
+          ${Array.isArray(res.ingredients) && res.ingredients.length ? `<ul>${res.ingredients.map(i=>`<li>${i}</li>`).join('')}</ul>` : ''}
+          <p style="margin:8px 0 0 0; font-size:12px; opacity:.6">Image saved to: uploads/${res.file_path.split('/').pop()}</p>
+        `;
+      });
+    </script>
+  </body>
+  </html>
+
+
